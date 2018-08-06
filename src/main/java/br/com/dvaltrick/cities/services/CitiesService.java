@@ -7,7 +7,6 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import br.com.dvaltrick.cities.enums.RegionType;
@@ -37,16 +36,16 @@ public class CitiesService {
 			Microregion micro = microService.addIfNew(data[8], RegionType.Microregion);
 			Mesoregion meso = mesoService.addIfNew(data[9], RegionType.Mesoregion);
 			
-			City city = new City();
-			city.setIbgeId(Integer.parseInt(data[0]));
-			city.setUf(state);
-			city.setName(data[2]);
-			city.setLongitude(data[4]);
-			city.setLatitude(data[5]);
-			city.setNoAccents(data[6]);
-			city.setAlternativeNames(data[7]);
-			city.setMicroregion(micro);
-			city.setMesoregion(meso);
+			City city = new City.Builder().withIBGE(Integer.parseInt(data[0]))
+										  .atUF(state)
+										  .withName(data[2])
+										  .atLongitude(data[4])
+										  .atLatitude(data[5])
+										  .withNoAccentsName(data[6])
+										  .withAlternativeNames(data[7])
+										  .atMicroregion(micro)
+										  .atMesoregion(meso)
+										  .build();
 			
 			add(city);
 			
@@ -90,18 +89,36 @@ public class CitiesService {
 	
 	public void delete(Integer id) throws Exception{
 		try{
-			City found = repository.getOne(id);
+			City found = repository.findById(id).get();
 			if(found != null){
-				repository.delete(found);	
+				State ufFound = found.getUf();
+				if(ufFound.getCapital().getId() == found.getId()){
+					ufFound.setCapital(null);
+					statesServices.save(ufFound);
+				}
+				
+				found.getUf().getCities().remove(found);
+				found.getMesoregion().getCities().remove(found);
+				found.getMicroregion().getCities().remove(found);
+				
+				repository.delete(found);					
 			}
 		}catch(Exception e){
 			throw new Exception("Falha na deleção");
 		}
 	}
 	
-	public List<City> filter(Integer ibge, String uf, String name, String lon, String lat, String noAccent, 
+	public Map<String, Object> filter(Integer ibge, String uf, String name, String lon, String lat, String noAccent, 
 			                 String alternative, String microregion, String mesoregion){
-		return repository.filter(ibge, uf, name, lon, lat, noAccent, alternative, microregion, mesoregion);
+		List<City> cities = repository.filter(ibge, uf, name, lon, lat, noAccent, alternative, microregion, mesoregion);
+		
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("lista", cities);
+		result.put("quantidade", cities.size());
+		
+		return result;
+		
+		
 	}
 	
 }

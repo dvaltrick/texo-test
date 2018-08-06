@@ -8,9 +8,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-
-
 @Entity
 public class City {
 	@Id
@@ -19,9 +16,8 @@ public class City {
 	
 	private Integer ibgeId; 
 	
-	@ManyToOne(fetch=FetchType.LAZY, targetEntity=State.class)
+	@ManyToOne(fetch=FetchType.EAGER, targetEntity=State.class)
 	@JoinColumn(name="uf_id", nullable=true, referencedColumnName="id")
-	@JsonBackReference(value="cities")
 	private State uf;
 	
 	private String name;
@@ -36,15 +32,91 @@ public class City {
 	
 	@ManyToOne(fetch=FetchType.EAGER, targetEntity=Microregion.class)
 	@JoinColumn(name="microregion_id", nullable=true, referencedColumnName="id")
-	@JsonBackReference(value="microregion")
 	private Microregion microregion;
 
 	@ManyToOne(fetch=FetchType.EAGER, targetEntity=Mesoregion.class)
 	@JoinColumn(name="mesoregion_id", nullable=true, referencedColumnName="id")
-	@JsonBackReference(value="mesoregion")
 	private Mesoregion mesoregion;
 	
+	
 	public City(){}
+	
+
+	public static class Builder{
+		private Integer ibgeId; 
+		private State uf;
+		private String name;
+		private String longitude;
+		private String latitude;
+		private String noAccents;
+		private String alternativeNames;
+		private Microregion microregion;
+		private Mesoregion mesoregion;
+		
+		public Builder(){}
+		
+		public Builder withIBGE(Integer value){
+			ibgeId = value;
+			return this;
+		}
+		
+		public Builder atUF(State value){
+			uf = value;
+			return this;
+		}
+		
+		public Builder withName(String value){
+			name = value;
+			return this;
+		}
+		
+		public Builder atLongitude(String value){
+			longitude = value;
+			return this;
+		}
+		
+		public Builder atLatitude(String value){
+			latitude = value;
+			return this;
+		}
+		
+		public Builder withNoAccentsName(String value){
+			noAccents = value;
+			return this;
+		}
+		
+		public Builder withAlternativeNames(String value){
+			alternativeNames = value;
+			return this;
+		}
+		
+		public Builder atMicroregion(Microregion value){
+			microregion = value;
+			return this;
+		}
+		
+		public Builder atMesoregion(Mesoregion value){
+			mesoregion = value;
+			return this;
+		}
+		
+		public City build(){
+			return new City(this);
+		}
+			
+	}
+	
+	public City(Builder builder){
+		ibgeId = builder.ibgeId;
+		uf = builder.uf;
+		name = builder.name;
+		longitude = builder.longitude;
+		latitude = builder.latitude;
+		noAccents = builder.noAccents;
+		alternativeNames = builder.alternativeNames;
+		microregion = builder.microregion;
+		mesoregion = builder.mesoregion;
+	}
 	
 	public Integer getId() {
 		return id;

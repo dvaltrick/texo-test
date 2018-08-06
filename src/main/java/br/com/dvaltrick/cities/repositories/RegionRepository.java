@@ -1,13 +1,11 @@
 package br.com.dvaltrick.cities.repositories;
 
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import br.com.dvaltrick.cities.enums.RegionType;
-import br.com.dvaltrick.cities.models.Mesoregion;
 import br.com.dvaltrick.cities.models.Region;
 
 @Repository

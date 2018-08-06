@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.dvaltrick.cities.enums.RegionType;
-import br.com.dvaltrick.cities.models.Mesoregion;
 import br.com.dvaltrick.cities.models.Microregion;
 import br.com.dvaltrick.cities.repositories.RegionRepository;
 

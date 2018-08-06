@@ -5,8 +5,6 @@ import org.springframework.stereotype.Service;
 
 import br.com.dvaltrick.cities.enums.RegionType;
 import br.com.dvaltrick.cities.models.Mesoregion;
-import br.com.dvaltrick.cities.models.Region;
-import br.com.dvaltrick.cities.models.State;
 import br.com.dvaltrick.cities.repositories.RegionRepository;
 
 @Service

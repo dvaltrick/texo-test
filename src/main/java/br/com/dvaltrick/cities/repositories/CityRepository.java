@@ -2,7 +2,8 @@ package br.com.dvaltrick.cities.repositories;
 
 import java.util.List;
 
-import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties.Pageable;
+import javax.transaction.Transactional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -18,6 +19,9 @@ public interface CityRepository extends JpaRepository<City, Integer>{
 	public List<?> getCitiesPerState();
 	
 	@Query("SELECT A FROM City A " +
+	       "  JOIN FETCH A.uf " +
+	       "  JOIN FETCH A.microregion " +
+	       "  JOIN FETCH A.mesoregion " +
 	       " WHERE (:ibge is null OR A.ibgeId = :ibge) " +
 		   "   AND (:uf is null OR A.uf.name = :uf) " +
 	       "   AND (:name is null OR A.name = :name) " +
@@ -37,4 +41,6 @@ public interface CityRepository extends JpaRepository<City, Integer>{
 							 @Param("microregion") String microregion, 
 							 @Param("mesoregion") String mesoregion);
 	
+	@Transactional
+	public void deleteById(Integer id);
 }

@@ -15,7 +15,7 @@ import javax.persistence.OneToOne;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class State {
@@ -26,12 +26,13 @@ public class State {
 	private String name;
 	
 	@OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "capital_id")
+    @JoinColumn(name = "capital_id", nullable=true)
+	@JsonIgnore
 	private City capital;
 	
 	@OneToMany(mappedBy="uf", fetch=FetchType.LAZY)
 	@Cascade({CascadeType.ALL})
-	@JsonManagedReference(value="cities")
+	@JsonIgnore
 	private Set<City> cities = new HashSet<City>();
 	
 	public State(){

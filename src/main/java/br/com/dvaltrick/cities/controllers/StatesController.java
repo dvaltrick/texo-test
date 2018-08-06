@@ -21,7 +21,7 @@ public class StatesController {
 	@Autowired
 	private StatesService service;
 	
-	@RequestMapping(value="/api/capitals",
+	@RequestMapping(value="/api/states/capitals",
 					method=RequestMethod.GET,
 					produces=MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody

@@ -10,7 +10,7 @@ import javax.persistence.OneToMany;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import br.com.dvaltrick.cities.enums.RegionType;
 
@@ -20,7 +20,7 @@ public class Mesoregion extends Region {
 
 	@OneToMany(mappedBy="mesoregion", fetch=FetchType.LAZY)
 	@Cascade({CascadeType.ALL})
-	@JsonManagedReference(value="mesoregion")
+	@JsonIgnore
 	private Set<City> cities = new HashSet<City>();
 	
 	public Mesoregion(){}

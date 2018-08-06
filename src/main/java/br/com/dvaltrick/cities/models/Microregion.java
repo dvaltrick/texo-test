@@ -10,16 +10,16 @@ import javax.persistence.OneToMany;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import br.com.dvaltrick.cities.enums.RegionType;
 
 @Entity
 public class Microregion extends Region{
 	
-	@OneToMany(mappedBy="microregion", fetch=FetchType.LAZY)
+	@OneToMany(mappedBy="microregion", fetch=FetchType.EAGER, orphanRemoval=true)
 	@Cascade({CascadeType.ALL})
-	@JsonManagedReference(value="microregion")
+	@JsonIgnore
 	private Set<City> cities = new HashSet<City>();
 
 	public Microregion(){}
