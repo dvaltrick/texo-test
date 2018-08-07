@@ -42,4 +42,4 @@ spring.datasource.password=root<br/>
 * Permitir remover uma cidade existente:
 <br/>URL: /api/cities/{id}
 <br/>Método: DELETE
-<br/>Exemplo http://localhost:8080/api/cities/4447 -> excluí a cidade com ID 4447 
+<br/>Exemplo http://localhost:8080/api/cities/4447 -> exclui a cidade com ID 4447 
